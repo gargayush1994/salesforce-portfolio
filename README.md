@@ -116,7 +116,7 @@ The website uses a modern color palette:
 
 The portfolio includes multiple contact methods:
 - **Email**: gargayush1994@gmail.com
-- **Phone**: +91-8510033969
+- **Phone**: +91-8510035969
 - **Location**: Bangalore, India
 - **LinkedIn**: [ayush-garg-6a1310123](https://linkedin.com/in/ayush-garg-6a1310123)
 
