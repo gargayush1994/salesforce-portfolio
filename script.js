@@ -120,21 +120,30 @@ if (contactForm) {
                 'Accept': 'application/json'
             }
         }).then(response => {
+            console.log('Response status:', response.status);
             if (response.ok) {
                 showNotification('Thank you for your message! I\'ll get back to you soon.', 'success');
                 this.reset();
             } else {
-                response.json().then(data => {
-                    if (data.errors) {
-                        showNotification('There was an error sending your message. Please try again.', 'error');
-                    } else {
-                        showNotification('Thank you for your message! I\'ll get back to you soon.', 'success');
-                        this.reset();
+                response.text().then(text => {
+                    console.log('Full response:', text);
+                    try {
+                        const data = JSON.parse(text);
+                        console.log('Formspree errors:', data);
+                        if (data.error === "Form not found") {
+                            showNotification('Form configuration issue. Please verify your Formspree form is active.', 'error');
+                        } else {
+                            showNotification('There was an error sending your message. Please try again.', 'error');
+                        }
+                    } catch (e) {
+                        console.log('Non-JSON response:', text);
+                        showNotification('Form needs activation. Please check your email for verification link.', 'error');
                     }
                 });
             }
         }).catch(error => {
-            showNotification('There was an error sending your message. Please try again.', 'error');
+            console.log('Network error:', error);
+            showNotification('Network error. Please check your connection and try again.', 'error');
         }).finally(() => {
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
