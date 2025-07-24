@@ -319,14 +319,14 @@ function initTypeAnimation() {
         if (index < text.length) {
             titleElement.innerHTML = text.slice(0, index + 1);
             index++;
-            setTimeout(typeCharacter, 50);
+            setTimeout(typeCharacter, 25); // Faster typing: 25ms instead of 50ms
         } else {
             // After typing is complete, animate other hero elements
             animateHeroElements();
         }
     }
     
-    setTimeout(typeCharacter, 1000);
+    setTimeout(typeCharacter, 500); // Start sooner: 500ms instead of 1000ms
 }
 
 // Animate hero elements after title animation
