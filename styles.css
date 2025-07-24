@@ -330,12 +330,14 @@ section {
 .highlight-item {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 1rem;
     padding: 1.5rem;
     background: white;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease;
+    text-align: left;
 }
 
 .highlight-item:hover {
@@ -345,6 +347,12 @@ section {
 .highlight-item i {
     font-size: 2rem;
     color: #1a73e8;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
 .highlight-item span {
