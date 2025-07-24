@@ -244,21 +244,64 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.classList.add('animate');
         }
     });
 }, observerOptions);
 
 // Observe elements for animation
 function initializeAnimations() {
-    const animatedElements = document.querySelectorAll('.timeline-item, .project-card, .skill-category, .highlight-item');
+    // Section titles
+    const sectionTitles = document.querySelectorAll('.section-title');
+    sectionTitles.forEach(title => {
+        observer.observe(title);
+    });
     
-    animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
+    // Timeline items with alternating slide directions
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    timelineItems.forEach(item => {
+        observer.observe(item);
+    });
+    
+    // Project cards
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+        observer.observe(card);
+    });
+    
+    // Skill categories with staggered animation
+    const skillCategories = document.querySelectorAll('.skill-category');
+    skillCategories.forEach((category, index) => {
+        setTimeout(() => {
+            observer.observe(category);
+        }, index * 200); // Stagger by 200ms
+    });
+    
+    // About highlights
+    const highlightItems = document.querySelectorAll('.about-highlights .highlight-item');
+    highlightItems.forEach((item, index) => {
+        setTimeout(() => {
+            observer.observe(item);
+        }, index * 150); // Stagger by 150ms
+    });
+    
+    // Skill tags animation when skill category comes into view
+    const skillCategoryObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const skillTags = entry.target.querySelectorAll('.skill-tag');
+                skillTags.forEach((tag, index) => {
+                    setTimeout(() => {
+                        tag.style.animationDelay = `${index * 0.1}s`;
+                        tag.classList.add('animate-skill-tag');
+                    }, index * 50);
+                });
+            }
+        });
+    }, { threshold: 0.3 });
+    
+    skillCategories.forEach(category => {
+        skillCategoryObserver.observe(category);
     });
 }
 
@@ -277,10 +320,72 @@ function initTypeAnimation() {
             titleElement.innerHTML = text.slice(0, index + 1);
             index++;
             setTimeout(typeCharacter, 50);
+        } else {
+            // After typing is complete, animate other hero elements
+            animateHeroElements();
         }
     }
     
     setTimeout(typeCharacter, 1000);
+}
+
+// Animate hero elements after title animation
+function animateHeroElements() {
+    const subtitle = document.querySelector('.hero-subtitle');
+    const description = document.querySelector('.hero-description');
+    const buttons = document.querySelector('.hero-buttons');
+    const contacts = document.querySelectorAll('.hero-contact .contact-item');
+    
+    // Animate subtitle
+    setTimeout(() => {
+        if (subtitle) {
+            subtitle.style.animation = 'fadeInUp 0.6s ease-out forwards';
+        }
+    }, 200);
+    
+    // Animate description
+    setTimeout(() => {
+        if (description) {
+            description.style.animation = 'fadeInUp 0.6s ease-out forwards';
+        }
+    }, 400);
+    
+    // Animate buttons
+    setTimeout(() => {
+        if (buttons) {
+            buttons.style.animation = 'fadeInUp 0.6s ease-out forwards';
+        }
+    }, 600);
+    
+    // Animate contact items with stagger
+    contacts.forEach((contact, index) => {
+        setTimeout(() => {
+            contact.style.animation = 'slideInLeft 0.5s ease-out forwards';
+        }, 800 + (index * 100));
+    });
+}
+
+// Add floating animation to metrics when they come into view
+function animateMetrics() {
+    const metrics = document.querySelectorAll('.highlight-metric');
+    
+    const metricsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const metric = entry.target;
+                setTimeout(() => {
+                    metric.style.animation = 'countUp 0.8s ease-out forwards';
+                    metric.style.transform = 'scale(1)';
+                }, 300);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    metrics.forEach(metric => {
+        metric.style.transform = 'scale(0.8)';
+        metric.style.opacity = '0.7';
+        metricsObserver.observe(metric);
+    });
 }
 
 // Skill tag hover effects
@@ -384,6 +489,16 @@ document.addEventListener('DOMContentLoaded', function() {
     initProjectCardEffects();
     initTimelineAnimations();
     addTimelineDotAnimation();
+    
+    // Hide hero elements initially for animation
+    const heroElements = document.querySelectorAll('.hero-subtitle, .hero-description, .hero-buttons, .hero-contact .contact-item');
+    heroElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+    });
+    
+    // Initialize metrics animation
+    animateMetrics();
     
     // Optional: Enable parallax effect (can cause performance issues on some devices)
     // initParallaxEffect();
