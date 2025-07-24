@@ -107,10 +107,10 @@ body {
 
 /* Hero Section */
 .hero {
-    min-height: 100vh;
+    min-height: 75vh;
     display: flex;
     align-items: center;
-    padding: 120px 0 80px;
+    padding: 100px 0 60px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     position: relative;
@@ -933,6 +933,11 @@ section {
 
     .container {
         padding: 0 15px;
+    }
+
+    .hero {
+        min-height: 90vh;
+        padding: 80px 0 40px;
     }
 
     section {
