@@ -446,6 +446,35 @@ section {
     font-size: 0.8rem;
 }
 
+.role-summary {
+    color: #555;
+    font-style: italic;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    border-left: 3px solid #e9ecef;
+    padding-left: 1rem;
+}
+
+.highlight-metric {
+    background: linear-gradient(45deg, #4caf50, #66bb6a);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.technologies {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #1a73e8;
+    font-size: 0.9rem;
+    color: #555;
+}
+
 /* Skills Section */
 .skills {
     background: #f8f9fa;
