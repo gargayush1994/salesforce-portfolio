@@ -584,6 +584,12 @@ section {
 .project-header i {
     font-size: 2rem;
     color: #1a73e8;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
 .project-card p {
