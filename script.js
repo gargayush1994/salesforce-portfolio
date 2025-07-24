@@ -90,8 +90,8 @@ if (contactForm) {
         // Get form data
         const formData = new FormData(this);
         const name = formData.get('name');
-        const email = formData.get('email');
-        const subject = formData.get('subject');
+        const email = formData.get('_replyto');
+        const subject = formData.get('_subject');
         const message = formData.get('message');
         
         // Basic validation
@@ -105,20 +105,40 @@ if (contactForm) {
             return;
         }
         
-        // Simulate form submission
+        // Get submit button and show loading state
         const submitBtn = this.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
         
         submitBtn.textContent = 'Sending...';
         submitBtn.disabled = true;
         
-        // Simulate API call
-        setTimeout(() => {
-            showNotification('Thank you for your message! I\'ll get back to you soon.', 'success');
-            this.reset();
+        // Submit to Formspree
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                showNotification('Thank you for your message! I\'ll get back to you soon.', 'success');
+                this.reset();
+            } else {
+                response.json().then(data => {
+                    if (data.errors) {
+                        showNotification('There was an error sending your message. Please try again.', 'error');
+                    } else {
+                        showNotification('Thank you for your message! I\'ll get back to you soon.', 'success');
+                        this.reset();
+                    }
+                });
+            }
+        }).catch(error => {
+            showNotification('There was an error sending your message. Please try again.', 'error');
+        }).finally(() => {
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
-        }, 2000);
+        });
     });
 }
 
